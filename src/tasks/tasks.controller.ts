@@ -1,10 +1,17 @@
-import { Controller, Get, Post, Body, Delete, Put, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete, Put, Param, Patch, Query } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto, SearchOrDeleteTaskDto } from './tasks-dto';
+import { TaskStatus } from './tasks.model';
+import { SearchFiltersDTO } from './tasks-filter-dto';
+import { Task } from '../../dist/src/tasks/tasks.model';
 
 @Controller('tasks')
 export class TasksController {
    constructor(private srvTasksService:TasksService) {}
+
+/* -------------------------------------------------------------------------- */
+/*                                   Get all                                  */
+/* -------------------------------------------------------------------------- */
 
    @Get ()
    getTasks()
@@ -12,23 +19,53 @@ export class TasksController {
         return this.srvTasksService.getAllTasks()
    }
 
+   @Get ('search')
+   searchTasks(@Query() search_dto:SearchFiltersDTO):Task[]
+   {
+       if (!Object.keys(search_dto).length)
+       {
+           this.getTasks()
+       }
+       return this.srvTasksService.searchFilter(search_dto)
+   }
+/* -------------------------------------------------------------------------- */
+/*                                  Get by id                                 */
+/* -------------------------------------------------------------------------- */
+
+   @Get ('/:id')
+   searchTask(@Param() id:string)
+   {
+       return this.srvTasksService.searchTask(id)
+   }
+
+/* -------------------------------------------------------------------------- */
+/*                                Update status                               */
+/* -------------------------------------------------------------------------- */
+
+   @Patch (':id/status')
+   updateTaskStatus(@Param('id') id:string, @Body('status') status:TaskStatus)
+   {
+    return this.srvTasksService.updateTaskStatus(id,status)
+   }
+
+/* -------------------------------------------------------------------------- */
+/*                                   Create                                   */
+/* -------------------------------------------------------------------------- */
+
    @Post ()
    createTasks(@Body() createTaskDto:CreateTaskDto)
    {
-        console.log('body',createTaskDto.title);
-        return this.srvTasksService.createTasks(createTaskDto)
+        return this.srvTasksService.createTasks(createTaskDto);
    }
 
-   @Put (':id')
-   searchTask(@Param() deleteTaskDto:SearchOrDeleteTaskDto)
-   {
-       return this.srvTasksService.searchTask(deleteTaskDto)
-   }
+/* -------------------------------------------------------------------------- */
+/*                                Delete by id                                */
+/* -------------------------------------------------------------------------- */
 
    @Delete (':id')
    deleteTask(@Param() deleteTaskDto:SearchOrDeleteTaskDto)
    {
        return this.srvTasksService.deleteTask(deleteTaskDto)
    }
-    
+
 }
