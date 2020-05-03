@@ -102,3 +102,12 @@ dist
 
 # TernJS port file
 .tern-port
+
+coverage/
+www/
+tmp/
+temp/
+$RECYCLE.BIN/
+.DS_Store
+Thumbs.db
+UserInterfaceState.xcuserstate
