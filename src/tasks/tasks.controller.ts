@@ -33,7 +33,7 @@ export class TasksController {
 /* -------------------------------------------------------------------------- */
 
    @Get ('/:id')
-   searchTask(@Param() id:string)
+   searchTask(@Param('id') id:string)
    {
        return this.srvTasksService.searchTask(id)
    }
