@@ -46,8 +46,6 @@ export class AppGateway implements OnGatewayInit {
   // message: { sender: string, room: string, message: string }
   @SubscribeMessage('sendMessage')
   async handleMessage(client, message: { room: string, user: string, msg: any }) {
-    console.log(message.room);
-    // this.wss.to(message.room).emit('getResponse', message);
     client.broadcast.emit('getResponse', message);
   }
 
@@ -56,7 +54,6 @@ export class AppGateway implements OnGatewayInit {
   /* -------------------------------------------------------------------------- */
   @SubscribeMessage('joinRoom')
   joinRoom(client: Socket, room: string) {
-    console.log(room);
     client.join(room);
     this.wss.to(room).emit('roomCreated', { 'room': room });
   }
@@ -66,7 +63,6 @@ export class AppGateway implements OnGatewayInit {
   /* -------------------------------------------------------------------------- */
   @SubscribeMessage('leaveRoom')
   leaveRoom(client: Socket, room: string) {
-    console.log(room);
     client.leave(room)
     client.emit('leftRoom', room)
   }
