@@ -1,8 +1,8 @@
-import { SubscribeMessage, WebSocketGateway, OnGatewayInit, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
+import { SubscribeMessage, WebSocketGateway, OnGatewayInit, WebSocketServer } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway(81, { namespace: 'event' })
+@WebSocketGateway({ namespace: 'event' })
 export class AppGateway implements OnGatewayInit {
 
   /* -------------------------------------------------------------------------- */
@@ -15,22 +15,7 @@ export class AppGateway implements OnGatewayInit {
   /*                                 Make Logger                                */
   /* -------------------------------------------------------------------------- */
 
-  logger: Logger = new Logger('App GateWay')
-
-  /* -------------------------------------------------------------------------- */
-  /*                               Connection Zone                              */
-  /* -------------------------------------------------------------------------- */
-
-  handleConnection(client: Socket, ...args: any[]) {
-    // throw new Error("Method not implemented.");
-    this.logger.debug(`App Getway handleConnection : ${client}`)
-  }
-
-  handleDisconnect(client: any) {
-    // throw new Error("Method not implemented.");
-    this.logger.debug(`App Getway handleDisconnect : ${client}`)
-  }
-
+  logger: Logger = new Logger('App GateWay');
 
   /* -------------------------------------------------------------------------- */
   /*                               OnInit Function                              */
