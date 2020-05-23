@@ -43,7 +43,6 @@ export class AppGateway implements OnGatewayInit {
   /* -------------------------------------------------------------------------- */
   /*                             OnCall msgToServer                             */
   /* -------------------------------------------------------------------------- */
-  // message: { sender: string, room: string, message: string }
   @SubscribeMessage('sendMessage')
   async handleMessage(client, message: { room: string, user: string, msg: any }) {
     client.broadcast.emit('getResponse', message);
