@@ -1,9 +1,11 @@
 import { SubscribeMessage, WebSocketGateway, OnGatewayInit, WebSocketServer } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
+const jsonfile = require('jsonfile')
 
 @WebSocketGateway({ namespace: 'event' })
 export class AppGateway implements OnGatewayInit {
+  obj = []
 
   /* -------------------------------------------------------------------------- */
   /*                                  BroadCast                                 */
@@ -30,6 +32,14 @@ export class AppGateway implements OnGatewayInit {
   /* -------------------------------------------------------------------------- */
   @SubscribeMessage('sendMessage')
   async handleMessage(client, message: { room: string, user: string, msg: any }) {
+    const file = './mayAlreadyExistedData.json'
+    this.obj.push(message);
+    jsonfile.writeFileSync(file, this.obj, { flag: 'w' })
+
+    jsonfile.readFile(file)
+      .then(obj => console.dir(obj))
+      .catch(error => console.error(error))
+
     client.broadcast.emit('getResponse', message);
   }
 
